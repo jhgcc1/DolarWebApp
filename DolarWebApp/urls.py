@@ -20,5 +20,7 @@ from django.urls import path
 from polls import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('calculateml/', views.calc, name='cal')
+    path('getdataendpoint/', views.getdataEndPoint, name='gete'),
+    path('trainmodel/', views.trainModel, name='trainm'),
+    path('predict/', views.Predict, name='pred')
 ]

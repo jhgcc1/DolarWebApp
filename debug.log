@@ -1,0 +1,4 @@
+[0126/205116.997:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0127/011743.427:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0127/014105.291:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[0131/145058.078:ERROR:filesystem_win.cc(148)] DeleteFile C:\Users\jh_gc\AppData\Local\Temp\scoped_dir16256_353402057\Crashpad\reports\25f88861-f1b8-46c7-b8ad-01fb9d3e9ff1.dmp: The process cannot access the file because it is being used by another process. (0x20)

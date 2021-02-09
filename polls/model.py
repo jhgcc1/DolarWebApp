@@ -58,7 +58,7 @@ def mlModel2(df,scoreMethod,considerModels,normType):
     gm_cv.fit(X_train, y_train)
 
     y_pred = gm_cv.predict(X_test)
-    residual = (y_test - y_pred)
+    residual = (y_test - y_pred).tolist()
     r2 = gm_cv.score(X_test, y_test)
     mse = mean_squared_error(y_test, y_pred)
     betspar = gm_cv.best_params_
