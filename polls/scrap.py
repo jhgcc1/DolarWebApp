@@ -13,13 +13,13 @@ import requests
 
 def getData(NumberOfyears,whatToconsider):
     options = webdriver.ChromeOptions()
-    #options.add_argument("--headless")
+    options.add_argument("--headless")
     driver = webdriver.Chrome(options=options,executable_path=r'C:\Users\jh_gc\Desktop\doalr\chromedriver.exe')
 
     driver.get("https://www.investing.com/")
-    dictall={"dxy": ["942611", "2067751", "US Dollar Index Historical Data"],"gold": ['8830','300004', 'Gold Futures Historical Data'],"brent": ['8833','300028', 'Brent Oil Futures Historical Data'],'bovespa': ['17920','2036142','Bovespa Historical Data'],'vix': ['44336', '2059974', 'CBOE Volatility Index Historical Data' ],'usd_cny':['2111','107259','USD/CNY Historical Data'],'usd_cop': ['2112','107260','USD/COP Historical Data'],'usd_mxn': ['39', '106701', 'USD/MXN Historical Data'],'usd_brl': ['2103', '107254', 'USD/BRL Historical Data']}
+    dictall={"DXY": ["942611", "2067751", "US Dollar Index Historical Data"],"Gold price": ['8830','300004', 'Gold Futures Historical Data'],"Brent oil price": ['8833','300028', 'Brent Oil Futures Historical Data'],'Ibovespa': ['17920','2036142','Bovespa Historical Data'],'VIX': ['44336', '2059974', 'CBOE Volatility Index Historical Data' ],'usd/cny':['2111','107259','USD/CNY Historical Data'],'usd/cop': ['2112','107260','USD/COP Historical Data'],'usd/mxn': ['39', '106701', 'USD/MXN Historical Data'],'usd_brl': ['2103', '107254', 'USD/BRL Historical Data']}
     
-    dictall2={"Pib eua":["397881","375"],"Relacao divida/pib Brasil":["398221","763"],"Pib Brasil trimestral":["391420","858"],"Fed interest rate decisions":[ "391242", "168"],"Selic":[ "402978", "415"]}
+    dictall2={"Pib eua":["397881","375"],"Debt-to-GDP ratio (Brazil)":["398221","763"],"Pib Brasil trimestral":["391420","858"],"Fed interest rate decisions":[ "391242", "168"],"Selic interest rate":[ "402978", "415"]}
     initialDate, finalDate,dateRange = get_dates(NumberOfyears,"/")
     dataframe=pd.DataFrame()
     #tempDict={}
@@ -87,7 +87,7 @@ def getData(NumberOfyears,whatToconsider):
             dataSeries= dataSeries.fillna(method="bfill")
             dataframe[key]=dataSeries.str.replace(",","").astype(float)
     
-    if "divida/pib eua" in whatToconsider:       
+    if "Debt-to-GDP ratio (USA)" in whatToconsider:       
         CSV_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=1901&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=GFDEGDQ188S&scale=left&cosd="+initialDate+"&coed=2020-04-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Quarterly&fam=avg&fgst=lin&fgsnd=2020-02-01&line_index=1&transformation=lin&vintage_date="+finalDate+"&revision_date="+finalDate+"&nd="+initialDate
         with requests.Session() as s:
             download = s.get(CSV_URL)
@@ -98,7 +98,7 @@ def getData(NumberOfyears,whatToconsider):
         dataSeries = pd.Series(TempListPricesAndDates,index=dateRange)
         dataSeries= dataSeries.fillna(method="ffill")
         dataSeries= dataSeries.fillna(method="bfill")
-        dataframe["divida/pib eua"]=dataSeries.str.replace(",","").astype(float)
+        dataframe["Debt-to-GDP ratio (USA)"]=dataSeries.str.replace(",","").astype(float)
     driver.quit()
     dataframe.index=(np.arange(start=0, stop=len(dataframe.index)))
     return dataframe

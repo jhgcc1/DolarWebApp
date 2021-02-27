@@ -8,13 +8,18 @@ def get_dates(N_ofyears,formatD):
     ano_inicial = (datetime.datetime.now() - relativedelta(years=N_ofyears))
 
     dateRange=pd.date_range(ano_inicial,(ano_final-timedelta(days=0)).strftime('%Y-%m-%d'),freq='d').strftime('%b %d, %Y')
+    dateRangeiso=pd.date_range(ano_inicial,(ano_final-timedelta(days=0)).strftime('%Y-%m-%d'),freq='d').strftime('%Y-%m-%d')
     if(formatD=="/"):
         
         ano_final = ano_final.strftime('%m/%d/%Y')
         ano_inicial = ano_inicial.strftime('%m/%d/%Y')
-        
+    elif formatD=="isoRange":
+        ano_final = ano_final.strftime('%Y-%m-%d')
+        ano_inicial=ano_inicial.strftime('%Y-%m-%d')
+        dateRange=dateRangeiso
     else:
         ano_final = ano_final.strftime('%Y-%m-%d')
         ano_inicial=ano_inicial.strftime('%Y-%m-%d')
+    
     return ano_inicial, ano_final,dateRange
 

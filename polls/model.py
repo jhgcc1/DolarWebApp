@@ -14,27 +14,29 @@ from polls.regressionModelClass import ClfSwitcher
 import xgboost as xgb
 
 def mlModel2(df,scoreMethod,considerModels,normType):
+    literalScoreObj={"Explained variance":"explained_variance","Max error":"max_error","Neg.. mean absolute error":"neg_mean_absolute_error","Neg. mean squared error":"neg_mean_squared_error","Neg. root mean squared error":"neg_root_mean_squared_error","Neg. mean squared log error":"neg_mean_squared_log_error","Neg. median absolute error":"neg_median_absolute_error","r2":"r2","Neg. mean poisson deviance":"neg_mean_poisson_deviance","Neg. mean gamma deviance":"neg_mean_gamma_deviance","Neg. mean absolute percentage error":"neg_mean_absolute_percentage_error"}
+    scoreMethod=literalScoreObj[scoreMethod]
     dictModels={}
     l1_space = np.linspace(0, 1, 5)
     alpha=np.logspace(-1,1,5)
     linspace01=np.linspace(0,1,3)
-    dictModels["gb"]={'clf__estimator': [GradientBoostingRegressor(loss="quantile",alpha=0.5)],
+    dictModels["Gradient boosting"]={'clf__estimator': [GradientBoostingRegressor(loss="quantile",alpha=0.5)],
             'clf__estimator__learning_rate': [0.05,0.1, 0.15,0.2],
             "norm__classifier_type":normType}
 
-    dictModels["en"]={'clf__estimator': [BaggingRegressor(ElasticNet(tol=1), n_estimators=20)],
+    dictModels["Elastic Net"]={'clf__estimator': [BaggingRegressor(ElasticNet(tol=1), n_estimators=20)],
             "clf__estimator__base_estimator__alpha":alpha,
             'clf__estimator__base_estimator__l1_ratio': l1_space,
             "norm__classifier_type":normType
         }
-    dictModels["svr"]={
+    dictModels["Support vector machine"]={
             'clf__estimator': [BaggingRegressor(SVR(tol=1,kernel="linear"), n_estimators=20)],
             'clf__estimator__base_estimator__C': [0.1, 2],
             #clf__estimator__base_estimator__epsilon': [ 0.01, 2],
             'clf__estimator__base_estimator__gamma': [ 0.1, 2],
             "norm__classifier_type":normType
         }
-    dictModels["xg"]={
+    dictModels["Extreme gradient boosting"]={
             'clf__estimator': [xgb.XGBRegressor(objective ='reg:squarederror', n_estimators = 20)],
             "norm__classifier_type":normType,
             'clf__estimator__learning_rate': [0.15,0.2,0.3],

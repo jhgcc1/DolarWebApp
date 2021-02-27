@@ -8,11 +8,12 @@ from sklearn.pipeline import Pipeline
 from polls.preprocessClass import PreProcess
 import xgboost as xgb
 from polls.datas import get_dates
+import pandas as pd
 
 def Intervals(df,gm_cv,betspar,r2,mse,residual,estimator,norm,X_train, y_train,NumberOfyears):
 
-    initialDate, finalDate,dateRange = get_dates(NumberOfyears,"-")
-    
+    initialDate, finalDate,dateRange = get_dates(NumberOfyears,"isoRange")
+    dateRange=dateRange[-40:].tolist()
     print(df)
     print(gm_cv)
     print(betspar)
@@ -48,24 +49,16 @@ def Intervals(df,gm_cv,betspar,r2,mse,residual,estimator,norm,X_train, y_train,N
         higherData=higher.predict(sevendaysdf).tolist()
         lowerData=lower.predict(sevendaysdf).tolist()
 
-
-        #plt.plot(x,higherData, color='grey', alpha=0.2, zorder=1)
-        #plt.plot(x, lowerData, color='grey', alpha=0.2, zorder=1)
-        #plt.plot(x,mid, color='red', zorder=5)
-        #plt.scatter(x,sevendaysdfY, marker='o', color='orange', zorder=4)
     elif type(clf__estimator)==type(xgb.XGBRegressor()):
         print("innnn")
         # "XGB P" prediction
     else:
-    
+        clf__estimator=clf__estimator.base_estimator
         for m in estimator.estimators_:
-            #print(m.coef_)
-            #print(m.intercept_)
-            #print(m.predict(sevendaysdfNorm))
-            #print(m)
-            #print(m.get_params())
             pinterval.append(m.predict(sevendaysdfNorm).tolist())
-
+        UpperLowerBoundDf=pd.DataFrame(pinterval, columns = dateRange)
+        higherData = UpperLowerBoundDf.max().tolist()
+        lowerData = UpperLowerBoundDf.min().tolist()
     # "Bagging model" prediction
 
-    return {"dateRange":dateRange.tolist(),"sevendaysPredict":sevendaysPredict.tolist(),"sevendaysdfY":sevendaysdfY,"higherData":higherData,"lowerData":lowerData,"pinterval":pinterval,"r2":r2,"mse":mse,"residual":residual}
+    return {"bestpreprocess":str(norm__classifier_type),"bestestimator":str(type(clf__estimator)),"dateRange":dateRange,"sevendaysPredict":sevendaysPredict.tolist(),"sevendaysdfY":sevendaysdfY,"higherData":higherData,"lowerData":lowerData,"pinterval":pinterval,"score":r2,"mse":mse,"residual":residual}
