@@ -51,7 +51,7 @@ def Intervals(df,gm_cv,betspar,r2,mse,residual,estimator,norm,X_train, y_train,N
 
     elif type(clf__estimator)==type(xgb.XGBRegressor()):
         print("innnn")
-        # "XGB P" prediction
+
     else:
         clf__estimator=clf__estimator.base_estimator
         for m in estimator.estimators_:
@@ -59,6 +59,17 @@ def Intervals(df,gm_cv,betspar,r2,mse,residual,estimator,norm,X_train, y_train,N
         UpperLowerBoundDf=pd.DataFrame(pinterval, columns = dateRange)
         higherData = UpperLowerBoundDf.max().tolist()
         lowerData = UpperLowerBoundDf.min().tolist()
-    # "Bagging model" prediction
 
-    return {"bestpreprocess":str(norm__classifier_type),"bestestimator":str(type(clf__estimator)),"dateRange":dateRange,"sevendaysPredict":sevendaysPredict.tolist(),"sevendaysdfY":sevendaysdfY,"higherData":higherData,"lowerData":lowerData,"pinterval":pinterval,"score":r2,"mse":mse,"residual":residual}
+    estimatorString=str(type(clf__estimator))
+    if "ElasticNet" in estimatorString:
+        estimatorString="Elastic net"
+    if "SVR" in estimatorString:
+        estimatorString="Support vector machine"
+    if "GradientBoostingRegressor" in estimatorString:
+        estimatorString="Gradient boosting regressor"
+    if "XGBRegressor" in estimatorString:
+        estimatorString="Extreme gradient boosting"
+
+
+
+    return {"bestpreprocess":str(norm__classifier_type),"bestestimator":estimatorString,"dateRange":dateRange,"sevendaysPredict":sevendaysPredict.tolist(),"sevendaysdfY":sevendaysdfY,"higherData":higherData,"lowerData":lowerData,"pinterval":pinterval,"score":r2,"mse":mse,"residual":residual}

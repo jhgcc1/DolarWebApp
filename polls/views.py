@@ -25,7 +25,7 @@ def getdataEndPoint(request):
             cache.set('df', df)
             return JsonResponse({"Success":"true"})
         except:
-            return JsonResponse({"error":"Error in cratinng and trainning the model"})
+            return JsonResponse({"error":"Error Crawlling the data"})
 
 @api_view(['POST'])
 def trainModel(request):
@@ -47,27 +47,27 @@ def trainModel(request):
             cache.set('y_train', y_train)
             return JsonResponse({"Success":"true"})
         except:
-            return JsonResponse({"error":"Error in trainning the model"})
+            return JsonResponse({"error":"Error trainning the model"})
 
 @api_view(['POST'])
 def Predict(request):
     if request.method == 'POST':
-        #try:
-        years=int(request.data['year'][0])
-        df=cache.get('df')
-        gm_cv=cache.get('gm_cv')
-        betspar=cache.get('betspar')
-        r2=cache.get('r2')
-        mse=cache.get('mse')
-        residual=cache.get('residual')
-        estimator=cache.get('estimator')
-        norm=cache.get('norm')
-        X_train=cache.get('X_train')
-        y_train=cache.get('y_train')
-        result=Intervals(df, gm_cv,betspar,r2,mse,residual,estimator,norm,X_train,y_train,years)
-        return JsonResponse(result)
-        #except:
-            #return JsonResponse({"error":"Error in predicting the model"})
+        try:
+            years=int(request.data['year'][0])
+            df=cache.get('df')
+            gm_cv=cache.get('gm_cv')
+            betspar=cache.get('betspar')
+            r2=cache.get('r2')
+            mse=cache.get('mse')
+            residual=cache.get('residual')
+            estimator=cache.get('estimator')
+            norm=cache.get('norm')
+            X_train=cache.get('X_train')
+            y_train=cache.get('y_train')
+            result=Intervals(df, gm_cv,betspar,r2,mse,residual,estimator,norm,X_train,y_train,years)
+            return JsonResponse(result)
+        except:
+            return JsonResponse({"error":"Error predicting the model"})
         
 
 

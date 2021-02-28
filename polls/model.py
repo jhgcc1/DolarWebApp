@@ -14,7 +14,7 @@ from polls.regressionModelClass import ClfSwitcher
 import xgboost as xgb
 
 def mlModel2(df,scoreMethod,considerModels,normType):
-    literalScoreObj={"Explained variance":"explained_variance","Max error":"max_error","Neg.. mean absolute error":"neg_mean_absolute_error","Neg. mean squared error":"neg_mean_squared_error","Neg. root mean squared error":"neg_root_mean_squared_error","Neg. mean squared log error":"neg_mean_squared_log_error","Neg. median absolute error":"neg_median_absolute_error","r2":"r2","Neg. mean poisson deviance":"neg_mean_poisson_deviance","Neg. mean gamma deviance":"neg_mean_gamma_deviance","Neg. mean absolute percentage error":"neg_mean_absolute_percentage_error"}
+    literalScoreObj={"Explained variance":"explained_variance","Max error":"max_error","Neg. mean absolute error":"neg_mean_absolute_error","Neg. mean squared error":"neg_mean_squared_error","Neg. root mean squared error":"neg_root_mean_squared_error","Neg. mean squared log error":"neg_mean_squared_log_error","Neg. median absolute error":"neg_median_absolute_error","r2":"r2","Neg. mean poisson deviance":"neg_mean_poisson_deviance","Neg. mean gamma deviance":"neg_mean_gamma_deviance","Neg. mean absolute percentage error":"neg_mean_absolute_percentage_error"}
     scoreMethod=literalScoreObj[scoreMethod]
     dictModels={}
     l1_space = np.linspace(0, 1, 5)
@@ -67,7 +67,4 @@ def mlModel2(df,scoreMethod,considerModels,normType):
     est = gm_cv.best_estimator_.named_steps['clf'].estimator
     norm = gm_cv.best_estimator_.named_steps['norm']
 
-    print("Tuned ElasticNet best estimators: {}".format(betspar))
-    print("Tuned ElasticNet R squared: {}".format(r2))
-    print("Tuned ElasticNet MSE: {}".format(mse))
     return gm_cv,betspar,r2,mse,residual,est,norm,X_train, y_train
