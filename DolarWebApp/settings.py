@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'channels',
     'polls',
 
 ]
@@ -81,10 +82,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'DolarWebApp.wsgi.application'
+ASGI_APPLICATION = 'DolarWebApp.asgi.application'
 
+#CHANNEL_LAYERS = {
+    #"default": {
+        #"BACKEND": "channels_redis.core.RedisChannelLayer",
+        #"CONFIG": {
+            #"hosts": [("localhost", 6379)],
+        #},
+    #},
+#}
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {

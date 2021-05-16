@@ -11,24 +11,26 @@ from polls.model import mlModel2
 from polls.alltogether import Intervals
 from polls.scrap import getData
 from django.core.cache import cache
+from channels.db import database_sync_to_async
 
-
-
+#@database_sync_to_async
 @api_view(['POST'])
 def getdataEndPoint(request):
+    print(request.user)
     if request.method == 'POST':
         try:
             cache.clear()
             years=int(request.data['year'][0])
-            consider=request.data["dataconsider"]
+            consider=request.data["dataconsider"] +["usd_brl"] #immutable
             df=getData(years,consider)
             cache.set('df', df)
             return JsonResponse({"Success":"true"})
         except:
             return JsonResponse({"error":"Error Crawlling the data"})
-
+#@database_sync_to_async
 @api_view(['POST'])
 def trainModel(request):
+    print(request.user)
     if request.method == 'POST':
         try:
             score=request.data['score']
@@ -48,9 +50,10 @@ def trainModel(request):
             return JsonResponse({"Success":"true"})
         except:
             return JsonResponse({"error":"Error trainning the model"})
-
+#@database_sync_to_async
 @api_view(['POST'])
 def Predict(request):
+    print(request.user)
     if request.method == 'POST':
         try:
             years=int(request.data['year'][0])
