@@ -1,0 +1,2 @@
+1
+web: gunicorn DollarWebApp.wsgi --log-file –
